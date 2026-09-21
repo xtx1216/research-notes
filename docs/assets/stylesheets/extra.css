@@ -22,7 +22,7 @@
 
 .md-content__inner {
   max-width: 920px;
-  padding-top: 1.2rem;
+  padding-top: 0.6rem;
   padding-bottom: 4rem;
 }
 
@@ -366,40 +366,107 @@ mjx-container[display="true"] {
    Header redesign - light academic style
    ========================================================= */
 
+/* =========================================================
+   Header - common
+   ========================================================= */
+
 .md-header {
-  background: #ffffff;
-  color: #1f2937;
   box-shadow: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.md-header__title,
-.md-header__button,
-.md-header__topic,
-.md-header__topic .md-ellipsis {
-  color: #1f2937 !important;
-}
-
-.md-logo {
-  color: #4f46e5 !important;
-}
-
-.md-search__form {
-  background: #f3f4f6 !important;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 10px;
-  box-shadow: none;
-}
-
-.md-search__input,
-.md-search__input::placeholder {
-  color: #374151 !important;
-}
-
-.md-search__icon {
-  color: #6b7280 !important;
 }
 
 .md-header__inner {
   min-height: 2.8rem;
+}
+
+.md-search__form {
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   Header - light mode
+   ========================================================= */
+
+[data-md-color-scheme="default"] .md-header {
+  background: #ffffff;
+  color: #1f2937;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-md-color-scheme="default"] .md-header__title,
+[data-md-color-scheme="default"] .md-header__button,
+[data-md-color-scheme="default"] .md-header__topic,
+[data-md-color-scheme="default"] .md-header__topic .md-ellipsis {
+  color: #1f2937 !important;
+}
+
+[data-md-color-scheme="default"] .md-logo {
+  color: #4f46e5 !important;
+}
+
+[data-md-color-scheme="default"] .md-search__form {
+  background: #f3f4f6 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-md-color-scheme="default"] .md-search__input,
+[data-md-color-scheme="default"] .md-search__input::placeholder {
+  color: #374151 !important;
+}
+
+[data-md-color-scheme="default"] .md-search__icon {
+  color: #6b7280 !important;
+}
+
+
+/* =========================================================
+   Header - dark mode
+   ========================================================= */
+
+[data-md-color-scheme="slate"] .md-header {
+  background: #1e2129;
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+[data-md-color-scheme="slate"] .md-header__title,
+[data-md-color-scheme="slate"] .md-header__button,
+[data-md-color-scheme="slate"] .md-header__topic,
+[data-md-color-scheme="slate"] .md-header__topic .md-ellipsis {
+  color: #e5e7eb !important;
+}
+
+[data-md-color-scheme="slate"] .md-logo {
+  color: #818cf8 !important;
+}
+
+[data-md-color-scheme="slate"] .md-search__form {
+  background: #292d36 !important;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+[data-md-color-scheme="slate"] .md-search__input,
+[data-md-color-scheme="slate"] .md-search__input::placeholder {
+  color: #d1d5db !important;
+}
+
+[data-md-color-scheme="slate"] .md-search__icon {
+  color: #9ca3af !important;
+}
+
+.md-header__inner {
+  min-height: 2.8rem;
+}
+
+/* -------------------------
+   Main layout spacing
+   ------------------------- */
+
+.md-main__inner {
+  margin-top: 0.4rem;
+}
+
+.md-content__inner {
+  padding-top: 0.6rem;
 }
