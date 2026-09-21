@@ -124,12 +124,6 @@ body {
   font-weight: 650;
 }
 
-.md-sidebar--primary .md-nav--primary > .md-nav__title {
-  color: var(--md-default-fg-color--light);
-  font-size: 0.72rem;
-  font-weight: 600;
-}
-
 .md-sidebar--primary .md-nav .md-nav .md-nav__link {
   color: var(--md-default-fg-color--light);
   font-size: 0.76rem;
@@ -141,7 +135,7 @@ body {
 }
 
 .md-sidebar__scrollwrap {
-  padding-top: 0.5rem;
+  padding-top: 0.2rem;
 }
 
 /* -------------------------
@@ -356,4 +350,56 @@ mjx-container[display="true"] {
     font-size: 1.3rem;
     margin-top: 2.2rem;
   }
+}
+
+/* -------------------------
+   Hide duplicated sidebar site title on desktop
+   ------------------------- */
+
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-nav--primary > .md-nav__title {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Header redesign - light academic style
+   ========================================================= */
+
+.md-header {
+  background: #ffffff;
+  color: #1f2937;
+  box-shadow: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.md-header__title,
+.md-header__button,
+.md-header__topic,
+.md-header__topic .md-ellipsis {
+  color: #1f2937 !important;
+}
+
+.md-logo {
+  color: #4f46e5 !important;
+}
+
+.md-search__form {
+  background: #f3f4f6 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.md-search__input,
+.md-search__input::placeholder {
+  color: #374151 !important;
+}
+
+.md-search__icon {
+  color: #6b7280 !important;
+}
+
+.md-header__inner {
+  min-height: 2.8rem;
 }

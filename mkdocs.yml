@@ -2,7 +2,7 @@
 # 基本信息
 # ============================================================
 
-site_name: XTX · VLA Research Notes
+site_name: XTX · VLA研究笔记
 site_url: https://xtx1216.github.io/research-notes/
 site_description: VLA / Reinforcement Learning / Robotics / Research Notes
 site_author: xtx
@@ -28,7 +28,7 @@ theme:
     # 浅色模式
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
+      primary: white
       accent: indigo
       toggle:
         icon: material/brightness-7
