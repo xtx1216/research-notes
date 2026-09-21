@@ -2,7 +2,7 @@
 # 基本信息
 # ============================================================
 
-site_name:  XTX的VLA研究笔记
+site_name: XTX · VLA Research Notes
 site_url: https://xtx1216.github.io/research-notes/
 site_description: VLA / Reinforcement Learning / Robotics / Research Notes
 site_author: xtx
@@ -81,6 +81,14 @@ theme:
 
     - content.code.copy
     - content.code.annotate
+
+
+# ============================================================
+# 自定义样式
+# ============================================================
+
+extra_css:
+  - assets/stylesheets/extra.css
 
 
 # ============================================================
