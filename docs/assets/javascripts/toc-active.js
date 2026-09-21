@@ -1,103 +1,172 @@
 (function () {
+  let cleanup = null;
+
   function setupTocActive() {
-    // Instant Navigation 切换页面后，先移除上一页的监听器。
-    if (window.__xtxTocCleanup) {
-      window.__xtxTocCleanup();
-      window.__xtxTocCleanup = null;
+    if (cleanup) {
+      cleanup();
+      cleanup = null;
     }
 
-    const links = Array.from(
-      document.querySelectorAll(
-        '.md-sidebar--secondary .md-nav__link[href^="#"]'
-      )
-    );
+    // 等 Material 完成当前页面 DOM 更新
+    requestAnimationFrame(() => {
+      const links = Array.from(
+        document.querySelectorAll(
+          ".md-sidebar--secondary .md-nav__link"
+        )
+      );
 
-    if (!links.length) return;
+      const items = links
+        .map((link) => {
+          let url;
 
-    const items = links
-      .map((link) => {
-        const href = link.getAttribute("href");
-        if (!href || href === "#") return null;
+          try {
+            url = new URL(link.href, window.location.href);
+          } catch {
+            return null;
+          }
 
-        const id = decodeURIComponent(href.slice(1));
-        const heading = document.getElementById(id);
+          // 只处理当前页面的锚点
+          if (!url.hash) return null;
 
-        if (!heading) return null;
+          const id = decodeURIComponent(
+            url.hash.substring(1)
+          );
 
-        return { link, heading };
-      })
-      .filter(Boolean);
+          const heading = document.getElementById(id);
 
-    if (!items.length) return;
+          if (!heading) return null;
 
-    let ticking = false;
+          return {
+            link,
+            heading,
+            id
+          };
+        })
+        .filter(Boolean);
 
-    function getOffset() {
-      const header = document.querySelector(".md-header");
-      const headerHeight = header
-        ? header.getBoundingClientRect().height
-        : 0;
+      if (!items.length) return;
 
-      // 标题进入 Header 下方约 20px 后，认为它是当前章节。
-      return headerHeight + 20;
-    }
+      let ticking = false;
 
-    function updateActive() {
-      ticking = false;
+      function getHeaderOffset() {
+        const header =
+          document.querySelector(".md-header");
 
-      const offset = getOffset();
-      let current = items[0];
+        const height = header
+          ? header.getBoundingClientRect().height
+          : 0;
 
-      for (const item of items) {
-        const top = item.heading.getBoundingClientRect().top;
+        return height + 24;
+      }
 
-        if (top <= offset) {
-          current = item;
-        } else {
-          break;
+      function setActive(current) {
+        items.forEach((item) => {
+          item.link.classList.toggle(
+            "xtx-toc-active",
+            item === current
+          );
+        });
+      }
+
+      function updateFromScroll() {
+        ticking = false;
+
+        const offset =
+          window.scrollY + getHeaderOffset();
+
+        let current = items[0];
+
+        for (const item of items) {
+          const top =
+            item.heading.getBoundingClientRect().top +
+            window.scrollY;
+
+          if (top <= offset) {
+            current = item;
+          } else {
+            break;
+          }
         }
+
+        /*
+         * 到页面底部时，强制选最后一个章节。
+         * 否则最后一个标题可能永远到不了判定线。
+         */
+        const nearBottom =
+          window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 4;
+
+        if (nearBottom) {
+          current = items[items.length - 1];
+        }
+
+        setActive(current);
       }
 
-      for (const item of items) {
-        item.link.classList.toggle("xtx-toc-active", item === current);
+      function onScroll() {
+        if (ticking) return;
+
+        ticking = true;
+        requestAnimationFrame(updateFromScroll);
       }
-    }
 
-    function onScroll() {
-      if (ticking) return;
+      function onClick(event) {
+        const clicked = items.find(
+          (item) => item.link === event.currentTarget
+        );
 
-      ticking = true;
-      requestAnimationFrame(updateActive);
-    }
+        if (clicked) {
+          // 点击后立即高亮，不等待 scroll spy
+          setActive(clicked);
+        }
 
-    function onClick() {
-      // 等浏览器完成 anchor 跳转后，再按正文位置重新判断。
-      requestAnimationFrame(() => {
-        requestAnimationFrame(updateActive);
+        // 浏览器完成锚点滚动后重新校准
+        requestAnimationFrame(() => {
+          requestAnimationFrame(updateFromScroll);
+        });
+      }
+
+      items.forEach((item) => {
+        item.link.addEventListener(
+          "click",
+          onClick
+        );
       });
-    }
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener(
+        "scroll",
+        onScroll,
+        { passive: true }
+      );
 
-    links.forEach((link) => {
-      link.addEventListener("click", onClick);
+      updateFromScroll();
+
+      cleanup = function () {
+        window.removeEventListener(
+          "scroll",
+          onScroll
+        );
+
+        items.forEach((item) => {
+          item.link.removeEventListener(
+            "click",
+            onClick
+          );
+        });
+      };
     });
-
-    updateActive();
-
-    window.__xtxTocCleanup = function () {
-      window.removeEventListener("scroll", onScroll);
-
-      links.forEach((link) => {
-        link.removeEventListener("click", onClick);
-      });
-    };
   }
 
-  // Material Instant Navigation 会在每次页面切换后触发 document$。
+  /*
+   * navigation.instant 开启时，
+   * Material 每次页面切换都会触发 document$
+   */
   if (typeof document$ !== "undefined") {
     document$.subscribe(setupTocActive);
   } else {
-    document.addEventListener("DOMContentLoaded", setupTocActive);
+    document.addEventListener(
+      "DOMContentLoaded",
+      setupTocActive
+    );
   }
 })();

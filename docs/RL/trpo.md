@@ -7,93 +7,73 @@ Trust Region Policy Optimization · Policy Gradient · Trust Region
 <div class="tags">
   <span>Reinforcement Learning</span>
   <span>Policy Gradient</span>
-  <span>Actor-Critic</span>
   <span>On-Policy</span>
 </div>
 
-TRPO（**Trust Region Policy Optimization**）是一种经典的策略梯度算法。它关注的核心问题是：
+TRPO（**Trust Region Policy Optimization**）要解决的问题很直接：
 
-> **策略需要更新，但一次不能改得太大。**
+> **策略当然要更新，但一次不能改得太多。**
 
-如果策略每次变化过于剧烈，前一轮采样得到的数据就很难继续准确反映新策略的表现，训练也容易出现性能突然下降。因此 TRPO 引入 **Trust Region（信赖域）**，把每次策略更新限制在一个相对可靠的范围内。
-
----
-
-## 核心思路
-
-普通 Policy Gradient 会沿着提高目标函数的方向更新参数：
-
-$$
-\theta
-\leftarrow
-\theta + \alpha \nabla_\theta J(\theta)
-$$
-
-但“参数只变化一点”并不一定意味着“策略分布只变化一点”。
-
-对于神经网络策略，参数上的小变化也可能让动作概率发生明显改变。因此 TRPO 不直接限制参数距离，而是限制：
-
-$$
-\pi_{\theta_{\mathrm{old}}}(a|s)
-\quad\text{和}\quad
-\pi_{\theta}(a|s)
-$$
-
-之间的差异。
-
-可以把 TRPO 的思路概括为：
-
-```text
-找到一个更好的更新方向
-        ↓
-限制策略不要变化过大
-        ↓
-在可信范围内完成更新
-```
+策略更新太小，学习很慢；更新太大，又可能把原本还不错的策略直接改坏。TRPO 的核心就是给每次更新划定一个“安全范围”。
 
 ---
 
-## 为什么叫 Trust Region
+## 1. 为什么需要限制策略更新
 
-Trust Region 原本是数值优化中的概念。
+普通策略梯度会沿着能够提高期望回报的方向更新参数：
 
-它的基本思想是：
+$$
+\theta \leftarrow \theta + \alpha \nabla_\theta J(\theta)
+$$
 
-> 当前点附近的局部近似通常比较可信，但离当前点太远之后，这个近似就未必可靠。
+但这里有一个问题：
 
-放到强化学习中，当前 rollout 是由旧策略采集得到的：
+**参数变化小，不等于策略变化小。**
+
+神经网络参数只改了一点，动作概率分布也可能发生明显变化。这样一来，原本基于旧策略采集的数据，就不再能很好地描述新策略。
+
+TRPO 因此不直接限制参数变化，而是限制：
 
 $$
 \pi_{\theta_{\mathrm{old}}}
+\quad\text{和}\quad
+\pi_\theta
 $$
 
-这些数据最能反映旧策略附近的情况。如果新策略一下跳得太远，旧数据对新策略的参考价值就会下降。
-
-因此 TRPO 希望每次只在旧策略附近寻找一个更好的策略。
+这两个策略之间的距离。
 
 ---
 
-## Probability Ratio
+## 2. 先让“好的动作”概率变大
 
-TRPO 会比较新旧策略对同一个动作给出的概率：
+假设当前数据由旧策略 $\pi_{\theta_{\mathrm{old}}}$ 采集。
+
+对某个状态 $s_t$ 和动作 $a_t$，定义概率比：
 
 $$
 r_t(\theta)
 =
-\frac{
-\pi_\theta(a_t|s_t)
-}{
-\pi_{\theta_{\mathrm{old}}}(a_t|s_t)
-}
+\frac{\pi_\theta(a_t|s_t)}
+{\pi_{\theta_{\mathrm{old}}}(a_t|s_t)}
 $$
 
 其中：
 
-- $\pi_{\theta_{\mathrm{old}}}$：采集当前 rollout 时使用的策略；
-- $\pi_\theta$：正在优化的新策略；
-- $\hat A_t$：当前动作的 Advantage。
+- $r_t(\theta)>1$：新策略更倾向于这个动作；
+- $r_t(\theta)<1$：新策略降低了这个动作的概率。
 
-基于这个比例，可以构造 surrogate objective：
+再结合 Advantage：
+
+$$
+\hat A_t
+$$
+
+就可以判断这个动作应不应该被加强。
+
+- $\hat A_t>0$：这个动作比预期好，希望提高它的概率；
+- $\hat A_t<0$：这个动作比预期差，希望降低它的概率。
+
+于是可以写出策略优化目标：
 
 $$
 L(\theta)
@@ -104,66 +84,61 @@ r_t(\theta)\hat A_t
 \right]
 $$
 
-当 $\hat A_t>0$ 时，希望提高当前动作在新策略中的概率；当 $\hat A_t<0$ 时，希望降低它的概率。
+如果只优化这个目标，策略可能一步走得太远，所以还需要第二部分：**Trust Region**。
 
 ---
 
-## KL 约束
+## 3. Trust Region：限制新旧策略距离
 
-TRPO 最关键的一步，是用 KL Divergence 限制新旧策略之间的距离：
+TRPO 用 KL Divergence 衡量新旧策略之间的差异：
 
 $$
-\mathbb{E}_{s}
+D_{\mathrm{KL}}
+\left(
+\pi_{\theta_{\mathrm{old}}}
+\|
+\pi_\theta
+\right)
+$$
+
+KL 越小，说明两个策略越接近；KL 越大，说明策略发生了更明显的变化。
+
+TRPO 要求：
+
+$$
+\mathbb{E}_s
 \left[
 D_{\mathrm{KL}}
 \left(
 \pi_{\theta_{\mathrm{old}}}(\cdot|s)
-\;\|\;
-\pi_{\theta}(\cdot|s)
+\|
+\pi_\theta(\cdot|s)
 \right)
 \right]
-\leq
-\delta
+\leq \delta
 $$
 
-这里的 $\delta$ 决定允许策略变化多大。
-
-如果：
+因此完整思想就是：
 
 $$
-D_{\mathrm{KL}} \approx 0
-$$
-
-说明新旧策略非常接近。
-
-如果 KL 很大，则说明策略分布已经发生明显变化。
-
-所以 TRPO 实际上在求解：
-
-$$
-\max_{\theta}
+\max_\theta
 \quad
 \mathbb{E}_t
 \left[
-\frac{
-\pi_\theta(a_t|s_t)
-}{
-\pi_{\theta_{\mathrm{old}}}(a_t|s_t)
-}
-\hat A_t
+r_t(\theta)\hat A_t
 \right]
 $$
 
 同时满足：
 
 $$
-\mathbb{E}_{s}
+\mathbb{E}_s
 \left[
 D_{\mathrm{KL}}
 \left(
 \pi_{\theta_{\mathrm{old}}}
 \|
-\pi_{\theta}
+\pi_\theta
 \right)
 \right]
 \leq \delta
@@ -171,225 +146,102 @@ $$
 
 也就是：
 
-> **在策略变化不能太大的前提下，让新的策略尽可能变好。**
+> **在新策略不能离旧策略太远的前提下，让策略尽可能变好。**
 
 ---
 
-## KL Divergence 怎么理解
+## 4. 为什么叫 Trust Region
 
-可以把 KL Divergence 简单理解成两个策略分布之间的差异。
+“Trust Region”可以理解成一个可信区域。
 
-例如同一个状态下：
+旧策略附近的数据是当前真正采样得到的，因此在这个区域附近，我们对“往哪个方向更新会更好”比较有把握。
 
-| Action | Old Policy | New Policy A | New Policy B |
-|---|---:|---:|---:|
-| Left | 0.50 | 0.48 | 0.10 |
-| Right | 0.50 | 0.52 | 0.90 |
+但如果一次跳得太远：
 
-New Policy A 和旧策略非常接近，而 New Policy B 已经明显改变了行为偏好。
+- 新策略和旧策略差别很大；
+- 旧数据对新策略的参考价值下降；
+- 原来的局部近似可能不再可靠。
 
-TRPO 要避免的就是后一种“单次更新过猛”的情况。
+所以 TRPO 的思路不是一次找到最终最优策略，而是：
 
----
-
-## Actor-Critic 与 Advantage
-
-TRPO 通常也放在 Actor-Critic 框架下使用。
-
-| 模块 | 作用 |
-|---|---|
-| Actor | 输出动作策略 $\pi_\theta(a|s)$ |
-| Critic | 估计状态价值 $V_\phi(s)$ |
-
-Critic 的作用之一，是帮助估计 Advantage：
-
-$$
-A_t \approx R_t - V(s_t)
-$$
-
-实际训练中通常会使用 GAE 来得到更稳定的 Advantage。
-
-Advantage 的含义仍然是：
-
-- $A_t>0$：当前动作比预期更好；
-- $A_t<0$：当前动作比预期更差。
-
-TRPO 主要解决的不是“Advantage 怎么算”，而是：
-
-> **有了 Advantage 之后，Actor 应该怎么安全地更新。**
+**每次只迈一个相对可靠的小步。**
 
 ---
 
-## TRPO 为什么实现比较复杂
+## 5. TRPO 实际怎么更新
 
-TRPO 不是一个简单的：
+TRPO 需要求解一个带 KL 约束的优化问题，不能直接简单地：
 
 ```text
 loss.backward()
 optimizer.step()
 ```
 
-因为它需要在优化目标的同时满足 KL 约束。
+实际实现通常会用：
 
-实际求解时通常会涉及：
+- Conjugate Gradient：近似求一个合适的更新方向；
+- Line Search：不断尝试步长，确保 KL 没有超出限制。
 
-- Fisher Information Matrix；
-- Hessian-vector product；
-- Conjugate Gradient；
-- Line Search。
+不需要记住具体推导，只要理解：
 
-初学阶段不需要推导这些数学细节，只需要理解它们分别在做什么。
-
-### Conjugate Gradient
-
-用来近似求解一个合适的更新方向，而不是显式计算完整的大矩阵逆。
-
-### Line Search
-
-得到更新方向后，再尝试不同步长。
-
-如果某一步：
-
-- KL 超过限制；
-- 或 surrogate objective 没有改善；
-
-就缩小步长重新尝试。
-
-因此 TRPO 的策略更新通常比较谨慎。
+> **方向要能提高策略，步长又必须满足 Trust Region。**
 
 ---
 
-## old policy 是什么
+## 6. old policy 是谁
 
-这一点非常重要。
-
-假设第 $k$ 轮开始时，用：
+这里的：
 
 $$
 \pi_{\theta_{\mathrm{old}}}
 $$
 
-采集了一批 rollout。
+指的是**采集当前这批 rollout 时使用的策略**。
 
-接下来所有基于这批 rollout 的策略优化，都以这个采样策略作为参考。
+在这一批数据对应的策略更新过程中，它保持固定。
 
-也就是说，分母里的：
-
-$$
-\pi_{\theta_{\mathrm{old}}}(a_t|s_t)
-$$
-
-在这一轮更新过程中保持不变。
-
-它不是：
+也就是说：
 
 ```text
-每优化一步
-→ 就把上一小步更新后的策略重新当成 old policy
+先用 old policy 采样
+        ↓
+固定 old policy
+        ↓
+寻找一个满足 KL 约束的新 policy
+        ↓
+更新完成
+        ↓
+再用新 policy 重新采样
 ```
 
-而是：
-
-```text
-当前候选策略
-────────────
-采样时的策略
-```
-
-等这一批 rollout 用完，再用新的策略重新与环境交互，进入下一轮。
+不是每优化一步，就把上一步的策略重新当成 old policy。
 
 ---
 
-## 训练流程
+## 7. TRPO 训练流程
 
-TRPO 的整体流程可以写成：
-
-1. 使用当前策略与环境交互，采集一批 rollout；
-2. 计算 reward、return 和 Advantage；
-3. 固定当前 rollout 对应的 old policy；
+1. 用当前策略与环境交互，采集一批数据；
+2. 计算每个动作的 Advantage；
+3. 固定采样时的 old policy；
 4. 构造 surrogate objective；
-5. 根据 KL 约束求一个合适的更新方向；
-6. 使用 Line Search 找到满足约束的步长；
-7. 更新 Actor；
-8. 更新 Critic；
-9. 用新策略重新采样下一批 rollout。
-
-从整体结构看，它仍然是一种 On-Policy 方法。
+5. 用 KL Divergence 限制策略变化；
+6. 求出合适的更新方向和步长；
+7. 得到新的策略；
+8. 用新策略重新采样。
 
 ---
 
-## 优点与局限
-
-TRPO 的优点在于，它直接从策略分布角度限制每次更新幅度，因此训练通常比最基础的 Policy Gradient 更稳定。
-
-它的主要缺点是实现复杂。为了满足 KL 约束，需要额外进行二阶近似、Conjugate Gradient 和 Line Search，这使得：
-
-- 代码更复杂；
-- 调试成本更高；
-- 大模型上的计算开销更明显；
-- 不容易直接套用普通深度学习优化器。
-
-所以学习 TRPO 最重要的不是记住每个二阶优化细节，而是理解：
-
-> **为什么策略更新需要一个“安全范围”。**
-
----
-
-## 在 VLA 中怎么理解
-
-如果把 TRPO 放到 VLA 后训练中，整体逻辑仍然是：
-
-```text
-Pretrained / SFT VLA
-        ↓
-Environment Rollout
-        ↓
-Reward
-        ↓
-Advantage
-        ↓
-Policy Update
-```
-
-对于大规模 VLA，真正值得保留的是 TRPO 的思想：
-
-> **后训练不能只追求当前 batch 上的 reward 提升，还要控制 policy drift。**
-
-如果一次更新把原本已经通过 SFT 学到的策略改得太远，很可能出现已有能力退化的问题。
-
----
-
-## 常见问题
-
-!!! warning "容易混淆的地方"
-
-    **1. Trust Region 不是限制参数变化大小**
-
-    它主要限制的是新旧 **策略分布** 之间的差异。
-
-    **2. KL 小不代表策略一定更好**
-
-    KL 只说明新旧策略接近，策略是否改善仍然取决于 reward 和 Advantage。
-
-    **3. old policy 在一轮 rollout 更新中保持固定**
-
-    它指的是采集当前这批数据时使用的策略。
-
-    **4. TRPO 主要解决的是策略更新稳定性**
-
-    它并不负责定义 reward，也不负责决定 Advantage 的具体估计方式。
-
----
-
-## 需要记住的几点
+## 8. TRPO 最重要的理解
 
 !!! abstract "TRPO 核心"
-    - TRPO 是一种 **On-Policy Policy Gradient** 方法；
-    - 它引入 **Trust Region** 来限制策略更新幅度；
-    - 新旧策略距离主要通过 **KL Divergence** 衡量；
-    - 更新目标仍然依赖 **Probability Ratio + Advantage**；
-    - `old policy` 是采集当前 rollout 时的策略；
-    - 真正重要的思想是：**策略要改进，但不能一次走得太远。**
+
+    TRPO 解决的核心问题不是“怎样计算 Reward”，而是：
+
+    **有了策略梯度之后，怎样避免一次更新把策略改得太远。**
+
+    它的答案是：
+
+    **用 KL Divergence 构造 Trust Region，只允许策略在可信范围内更新。**
 
 ---
 
@@ -398,7 +250,3 @@ Policy Update
 1. **Trust Region Policy Optimization**  
    John Schulman, Sergey Levine, Philipp Moritz, Michael I. Jordan, Pieter Abbeel.  
    ICML, 2015.
-
-2. **High-Dimensional Continuous Control Using Generalized Advantage Estimation**  
-   John Schulman et al.  
-   ICLR, 2016.
