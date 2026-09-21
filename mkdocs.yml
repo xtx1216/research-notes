@@ -88,89 +88,43 @@ theme:
 # ============================================================
 
 nav:
-
-  # ----------------------------------------------------------
-  # 首页
-  # ----------------------------------------------------------
-
   - 首页: index.md
 
-
-  # ----------------------------------------------------------
-  # VLA
-  # ----------------------------------------------------------
-
-#   - VLA:
-
-#       # navigation.indexes 开启后
-#       # 这个页面会直接绑定到 “VLA” 标题
-#       - VLA/index.md
-
-#       - 基础概念:
-#           - VLA 简介: VLA/index.md
-
-#       - 模型:
-#           - π0: VLA/pi0.md
-#           - π0.5: VLA/pi05.md
-#           - OpenVLA: VLA/openvla.md
-
-#       - 强化学习后训练:
-#           - RL Post-Training: VLA/rl-post-training.md
-
-
-  # ----------------------------------------------------------
-  # 强化学习
-  # ----------------------------------------------------------
+  - VLA:
+      - VLA/index.md
+      - 模型:
+          - OpenVLA: VLA/openvla.md
+      - 强化学习后训练:
+          - RL Post-Training: VLA/rl-post-training.md
 
   - 强化学习:
-
+      - RL/index.md
       - PPO: RL/ppo.md
-          
-
-
-
-
-  # ----------------------------------------------------------
-  # Benchmark
-  # ----------------------------------------------------------
 
   - Benchmarks:
-
-
-        - LIBERO: Benchmarks/libero.md
-        - CALVIN: Benchmarks/calvin.md
-        - ManiSkill: Benchmarks/maniskill.md
-        - SimplerEnv: Benchmarks/simplerenv.md
-        - RoboCasa: Benchmarks/robocasa.md
-        - Meta-World: Benchmarks/metaworld.md
-
-
-  # ----------------------------------------------------------
-  # 论文阅读
-  # ----------------------------------------------------------
+      - Benchmarks/index.md
+      - LIBERO: Benchmarks/libero.md
+      - CALVIN: Benchmarks/calvin.md
+      - ManiSkill: Benchmarks/maniskill.md
+      - SimplerEnv: Benchmarks/simplerenv.md
+      - RoboCasa: Benchmarks/robocasa.md
+      - Meta-World: Benchmarks/metaworld.md
 
   - 论文阅读:
-        - 论文阅读模板: Paper-Notes/paper-template.md
-        - VLA基础模型: 
-            - pi0: Paper-Notes/vla_base/pi0.md
-            - pi0.5: Paper-Notes/vla_base/pi05.md
-
-
-  # ----------------------------------------------------------
-  # Engineering
-  # ----------------------------------------------------------
+      - Paper-Notes/index.md
+      - 论文阅读模板: Paper-Notes/paper-template.md
+      - VLA 基础模型:
+          - π0: Paper-Notes/vla_base/pi0.md
+          - π0.5: Paper-Notes/vla_base/pi05.md
 
   - Engineering:
-
+      - Engineering/index.md
       - Git:
           - Git 常用操作: Engineering/git.md
-
       - Linux:
           - Linux 常用操作: Engineering/linux.md
-
       - GPU 与 CUDA:
           - CUDA / NCCL: Engineering/cuda-nccl.md
-
       - 分布式训练:
           - FSDP: Engineering/fsdp.md
 
@@ -278,13 +232,11 @@ markdown_extensions:
 
 
 # ============================================================
-# MathJax
+# MathJax：先加载本地配置，再加载渲染库
 # ============================================================
 
 extra_javascript:
-
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
-
+  - assets/javascripts/mathjax.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 

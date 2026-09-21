@@ -19,7 +19,7 @@
 
     RT-1 / RT-2 / OpenVLA / π0 / π0.5 / π0.7 与 RL 后训练。
 
-    [:octicons-arrow-right-24: 进入 VLA](VLA/)
+    [:octicons-arrow-right-24: 进入 VLA](VLA/index.md)
 
 -   :material-chart-bell-curve:{ .lg .middle } **Reinforcement Learning**
 
@@ -27,7 +27,7 @@
 
     PPO、GAE、PBRS、Reward Model、PRM 与后训练方法。
 
-    [:octicons-arrow-right-24: 进入 RL](RL/)
+    [:octicons-arrow-right-24: 进入 RL](RL/index.md)
 
 -   :material-test-tube:{ .lg .middle } **Benchmarks**
 
@@ -35,7 +35,7 @@
 
     LIBERO、CALVIN、ManiSkill、SimplerEnv、RoboCasa、Meta-World。
 
-    [:octicons-arrow-right-24: 进入 Benchmarks](Benchmarks/)
+    [:octicons-arrow-right-24: 进入 Benchmarks](Benchmarks/index.md)
 
 -   :material-file-document-outline:{ .lg .middle } **Paper Notes**
 
@@ -43,7 +43,7 @@
 
     按论文长期积累：问题、方法、实验、局限与个人理解。
 
-    [:octicons-arrow-right-24: 进入 Paper Notes](Paper-Notes/)
+    [:octicons-arrow-right-24: 进入 Paper Notes](Paper-Notes/index.md)
 
 </div>
 
