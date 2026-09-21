@@ -1,6 +1,8 @@
 # GAE
 
-debug
+$$
+\delta_t=r_t+\gamma V(s_{t+1})-V(s_t)
+$$
 
 $$
 \delta_t=r_t+\gamma V(s_{t+1})-V(s_t)
