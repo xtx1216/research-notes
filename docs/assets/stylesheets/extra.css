@@ -162,7 +162,12 @@ body {
 }
 
 .md-sidebar--secondary .md-nav__link--active {
-  color: var(--md-accent-fg-color);
+  color: var(--md-default-fg-color--light);
+  font-weight: 400;
+}
+
+.md-sidebar--secondary .md-nav__link.xtx-toc-active {
+  color: var(--md-accent-fg-color) !important;
   font-weight: 600;
 }
 
@@ -622,7 +627,12 @@ mjx-container[display="true"] {
 }
 
 .md-sidebar--secondary .md-nav__link--active {
-  color: var(--xtx-brand);
+  color: var(--xtx-muted);
+  font-weight: 400;
+}
+
+.md-sidebar--secondary .md-nav__link.xtx-toc-active {
+  color: var(--xtx-brand) !important;
   font-weight: 600;
 }
 

@@ -246,6 +246,7 @@ markdown_extensions:
 
 extra_javascript:
   - assets/javascripts/mathjax.js
+  - assets/javascripts/toc-active.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 
