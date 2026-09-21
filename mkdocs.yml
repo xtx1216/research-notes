@@ -107,6 +107,7 @@ nav:
 
   - 强化学习:
       - RL/index.md
+      - TRPO: RL/trpo.md  
       - PPO: RL/ppo.md
 
   - Benchmarks:

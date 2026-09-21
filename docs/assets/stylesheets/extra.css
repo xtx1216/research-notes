@@ -256,6 +256,29 @@ mjx-container[display="true"] {
 }
 
 /* -------------------------
+   Figures
+   ------------------------- */
+
+.md-typeset figure {
+  margin: 1.8rem auto;
+  text-align: center;
+}
+
+.md-typeset figure img {
+  border-radius: var(--xtx-radius-md);
+  height: auto;
+}
+
+.md-typeset figcaption,
+.figure-caption {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  margin-top: 0.6rem;
+  text-align: center;
+}
+
+/* -------------------------
    Homepage cards
    ------------------------- */
 
@@ -374,10 +397,6 @@ mjx-container[display="true"] {
   box-shadow: none;
 }
 
-.md-header__inner {
-  min-height: 2.8rem;
-}
-
 .md-search__form {
   border-radius: 10px;
   box-shadow: none;
@@ -453,10 +472,6 @@ mjx-container[display="true"] {
 
 [data-md-color-scheme="slate"] .md-search__icon {
   color: #9ca3af !important;
-}
-
-.md-header__inner {
-  min-height: 2.8rem;
 }
 
 /* -------------------------
@@ -783,4 +798,13 @@ mjx-container[display="true"] {
 .updates-table td:first-child {
   width: 115px;
   white-space: nowrap;
+}
+
+/* -------------------------
+   Anchor offset
+   ------------------------- */
+
+.md-typeset h2,
+.md-typeset h3 {
+  scroll-margin-top: 3.5rem;
 }

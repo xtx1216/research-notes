@@ -21,12 +21,23 @@
 │   ├── Paper-Notes/    # 论文阅读笔记与模板
 │   ├── Engineering/    # 工程记录与问题排查
 │   └── index.md        # 站点首页
+├── _templates/         # VLA、RL 与 Benchmark 页面模板
 ├── mkdocs.yml          # 站点与导航配置
 ├── requirements.txt    # Python 依赖
 ├── start.sh            # Linux/macOS 本地启动脚本
 └── .github/workflows/deploy.yml
                          # GitHub Pages 自动部署工作流
 ```
+
+## 笔记模板
+
+新增页面时优先从 `_templates/` 复制对应模板：
+
+- `vla-model.md`：VLA 模型结构、动作表示、训练和评测；
+- `rl-algorithm.md`：RL 算法直觉、公式、超参数和实验排查；
+- `benchmark.md`：Benchmark 任务、空间、评测协议和实验结果。
+
+模板目录位于 `docs/` 之外，因此不会被 MkDocs 构建为网站页面。当前可以参考 `OpenVLA`、`PPO` 和 `CALVIN` 三个样板页。
 
 ## 本地运行
 
