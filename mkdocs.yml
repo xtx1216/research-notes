@@ -100,22 +100,22 @@ nav:
   # VLA
   # ----------------------------------------------------------
 
-  - VLA:
+#   - VLA:
 
-      # navigation.indexes 开启后
-      # 这个页面会直接绑定到 “VLA” 标题
-      - VLA/index.md
+#       # navigation.indexes 开启后
+#       # 这个页面会直接绑定到 “VLA” 标题
+#       - VLA/index.md
 
-      - 基础概念:
-          - VLA 简介: VLA/index.md
+#       - 基础概念:
+#           - VLA 简介: VLA/index.md
 
-      - 模型:
-          - π0: VLA/pi0.md
-          - π0.5: VLA/pi05.md
-          - OpenVLA: VLA/openvla.md
+#       - 模型:
+#           - π0: VLA/pi0.md
+#           - π0.5: VLA/pi05.md
+#           - OpenVLA: VLA/openvla.md
 
-      - 强化学习后训练:
-          - RL Post-Training: VLA/rl-post-training.md
+#       - 强化学习后训练:
+#           - RL Post-Training: VLA/rl-post-training.md
 
 
   # ----------------------------------------------------------
@@ -124,17 +124,10 @@ nav:
 
   - 强化学习:
 
-      - PPO:
-          - PPO 基础: RL/ppo.md
+      - PPO: RL/ppo.md
+          
 
-      - Advantage:
-          - GAE: RL/gae.md
 
-      - Reward Shaping:
-          - PBRS: RL/pbrs.md
-
-      - Reward Model:
-          - PRM: RL/prm.md
 
 
   # ----------------------------------------------------------
@@ -143,15 +136,13 @@ nav:
 
   - Benchmarks:
 
-      - 通用机器人操作:
-          - LIBERO: Benchmarks/libero.md
-          - CALVIN: Benchmarks/calvin.md
 
-      - 仿真平台:
-          - ManiSkill: Benchmarks/maniskill.md
-          - SimplerEnv: Benchmarks/simplerenv.md
-          - RoboCasa: Benchmarks/robocasa.md
-          - Meta-World: Benchmarks/metaworld.md
+        - LIBERO: Benchmarks/libero.md
+        - CALVIN: Benchmarks/calvin.md
+        - ManiSkill: Benchmarks/maniskill.md
+        - SimplerEnv: Benchmarks/simplerenv.md
+        - RoboCasa: Benchmarks/robocasa.md
+        - Meta-World: Benchmarks/metaworld.md
 
 
   # ----------------------------------------------------------
