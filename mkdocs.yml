@@ -3,6 +3,7 @@
 # ============================================================
 
 site_name:  XTX的VLA研究笔记
+site_url: https://xtx1216.github.io/research-notes/
 site_description: VLA / Reinforcement Learning / Robotics / Research Notes
 site_author: xtx
 
