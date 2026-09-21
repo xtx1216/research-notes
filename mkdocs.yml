@@ -1,0 +1,304 @@
+# ============================================================
+# 基本信息
+# ============================================================
+
+site_name:  XTX的VLA研究笔记
+site_description: VLA / Reinforcement Learning / Robotics / Research Notes
+site_author: xtx
+
+copyright: Copyright &copy; 2026 xtx
+
+
+# ============================================================
+# Material 主题
+# ============================================================
+
+theme:
+  name: material
+  language: zh
+
+  # 左上角图标
+  icon:
+    logo: material/book-open-page-variant
+
+  # 明暗主题
+  palette:
+
+    # 浅色模式
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式
+
+    # 深色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式
+
+  features:
+
+    # --------------------------------------------------------
+    # 导航
+    # --------------------------------------------------------
+
+    # 页面切换更快
+    - navigation.instant
+
+    # URL 随当前标题变化
+    - navigation.tracking
+
+    # 让章节 index.md 成为章节标题本身
+    - navigation.indexes
+
+    # 页面向下滚动后显示“返回顶部”
+    - navigation.top
+
+    # --------------------------------------------------------
+    # 右侧文章目录
+    # --------------------------------------------------------
+
+    - toc.follow
+
+    # --------------------------------------------------------
+    # 搜索
+    # --------------------------------------------------------
+
+    - search.suggest
+    - search.highlight
+    - search.share
+
+    # --------------------------------------------------------
+    # 代码
+    # --------------------------------------------------------
+
+    - content.code.copy
+    - content.code.annotate
+
+
+# ============================================================
+# 网站导航
+# ============================================================
+
+nav:
+
+  # ----------------------------------------------------------
+  # 首页
+  # ----------------------------------------------------------
+
+  - 首页: index.md
+
+
+  # ----------------------------------------------------------
+  # VLA
+  # ----------------------------------------------------------
+
+  - VLA:
+
+      # navigation.indexes 开启后
+      # 这个页面会直接绑定到 “VLA” 标题
+      - VLA/index.md
+
+      - 基础概念:
+          - VLA 简介: VLA/index.md
+
+      - 模型:
+          - π0: VLA/pi0.md
+          - π0.5: VLA/pi05.md
+          - OpenVLA: VLA/openvla.md
+
+      - 强化学习后训练:
+          - RL Post-Training: VLA/rl-post-training.md
+
+
+  # ----------------------------------------------------------
+  # 强化学习
+  # ----------------------------------------------------------
+
+  - 强化学习:
+
+      - PPO:
+          - PPO 基础: RL/ppo.md
+
+      - Advantage:
+          - GAE: RL/gae.md
+
+      - Reward Shaping:
+          - PBRS: RL/pbrs.md
+
+      - Reward Model:
+          - PRM: RL/prm.md
+
+
+  # ----------------------------------------------------------
+  # Benchmark
+  # ----------------------------------------------------------
+
+  - Benchmarks:
+
+      - 通用机器人操作:
+          - LIBERO: Benchmarks/libero.md
+          - CALVIN: Benchmarks/calvin.md
+
+      - 仿真平台:
+          - ManiSkill: Benchmarks/maniskill.md
+          - SimplerEnv: Benchmarks/simplerenv.md
+          - RoboCasa: Benchmarks/robocasa.md
+          - Meta-World: Benchmarks/metaworld.md
+
+
+  # ----------------------------------------------------------
+  # 论文阅读
+  # ----------------------------------------------------------
+
+  - Paper Notes:
+
+      - 论文阅读:
+          - 论文阅读模板: Paper-Notes/paper-template.md
+
+
+  # ----------------------------------------------------------
+  # Engineering
+  # ----------------------------------------------------------
+
+  - Engineering:
+
+      - Git:
+          - Git 常用操作: Engineering/git.md
+
+      - Linux:
+          - Linux 常用操作: Engineering/linux.md
+
+      - GPU 与 CUDA:
+          - CUDA / NCCL: Engineering/cuda-nccl.md
+
+      - 分布式训练:
+          - FSDP: Engineering/fsdp.md
+
+
+# ============================================================
+# 插件
+# ============================================================
+
+plugins:
+
+  # MkDocs 自带搜索
+  - search:
+      lang:
+        - zh
+        - en
+
+
+# ============================================================
+# Markdown 扩展
+# ============================================================
+
+markdown_extensions:
+
+  # ----------------------------------------------------------
+  # 提示框
+  # ----------------------------------------------------------
+
+  - admonition
+
+  - pymdownx.details
+
+  - pymdownx.superfences
+
+
+  # ----------------------------------------------------------
+  # 代码高亮
+  # ----------------------------------------------------------
+
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+
+  - pymdownx.inlinehilite
+
+
+  # ----------------------------------------------------------
+  # 数学公式
+  # ----------------------------------------------------------
+
+  - pymdownx.arithmatex:
+      generic: true
+
+
+  # ----------------------------------------------------------
+  # Markdown 常用增强
+  # ----------------------------------------------------------
+
+  - attr_list
+
+  - md_in_html
+
+  - tables
+
+  - footnotes
+
+  - def_list
+
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+
+  # ----------------------------------------------------------
+  # Emoji / Material 图标
+  # ----------------------------------------------------------
+
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+
+  # ----------------------------------------------------------
+  # Tab
+  # ----------------------------------------------------------
+
+  - pymdownx.tabbed:
+      alternate_style: true
+
+
+  # ----------------------------------------------------------
+  # 键盘按键
+  # ----------------------------------------------------------
+
+  - pymdownx.keys
+
+
+  # ----------------------------------------------------------
+  # 删除线 / 下划线等
+  # ----------------------------------------------------------
+
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+
+
+# ============================================================
+# MathJax
+# ============================================================
+
+extra_javascript:
+
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+
+# ============================================================
+# 页脚 / 社交信息
+# ============================================================
+
+extra:
+
+  generator: false
