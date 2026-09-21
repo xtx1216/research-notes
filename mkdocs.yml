@@ -149,10 +149,11 @@ nav:
   # 论文阅读
   # ----------------------------------------------------------
 
-  - Paper Notes:
-
-      - 论文阅读:
-          - 论文阅读模板: Paper-Notes/paper-template.md
+  - 论文阅读:
+        - 论文阅读模板: Paper-Notes/paper-template.md
+        - VLA基础模型: 
+            - pi0: Paper-Notes/vla_base/pi0.md
+            - pi0.5: Paper-Notes/vla_base/pi05.md
 
 
   # ----------------------------------------------------------
