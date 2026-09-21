@@ -8,6 +8,7 @@
 |---|---|
 | 2026-09-21 | 建立 MkDocs 科研笔记站 |
 | 2026-09-21 | 初始化 VLA / RL / Benchmark / Paper Notes / Engineering 目录 |
+{: .updates-table }
 
 ## 快速入口
 
