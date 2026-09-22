@@ -1,5 +1,10 @@
 # iRe-VLA：Improving Vision-Language-Action Model with Online Reinforcement Learning
 
+> Yanjiang Guo et al., Tsinghua University / UC Berkeley / Shanghai Qi Zhi Institute  
+> **2025 IEEE International Conference on Robotics and Automation（ICRA 2025）**
+
+
+
 ## 1. 这篇论文在解决什么问题
 
 现有 VLA 通常先使用机器人专家数据进行监督微调：

@@ -110,7 +110,7 @@ nav:
       - TRPO: RL/trpo.md  
       - PPO: RL/ppo.md
 
-  - Benchmarks:
+  - 仿真平台:
       - Benchmarks/index.md
       - LIBERO: Benchmarks/libero.md
       - CALVIN: Benchmarks/calvin.md
@@ -121,7 +121,6 @@ nav:
 
   - 论文阅读:
       - Paper-Notes/index.md
-      - 论文阅读模板: Paper-Notes/paper-template.md
       - VLA 基础模型:
           - π0: Paper-Notes/vla_base/pi0.md
           - π0.5: Paper-Notes/vla_base/pi05.md
