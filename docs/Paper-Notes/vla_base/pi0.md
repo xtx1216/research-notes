@@ -1,13 +1,15 @@
 # π₀：A Vision-Language-Action Flow Model for General Robot Control
 
-> Kevin Black et al., Physical Intelligence  
-> Robotics: Science and Systems（RSS 2025）
+!!! info "论文信息"
+    Kevin Black et al., Physical Intelligence
+    Robotics: Science and Systems（RSS 2025）
 
 ## 1. 这篇论文在解决什么问题
 
 π₀ 想解决的不是某一个单独的机器人任务，而是：
 
-> **能不能像训练大语言模型一样，先在大规模、多机器人、多任务数据上预训练一个通用机器人基础模型，再通过少量高质量数据把它适配到具体复杂任务？**
+!!! question "核心问题"
+    **能不能像训练大语言模型一样，先在大规模、多机器人、多任务数据上预训练一个通用机器人基础模型，再通过少量高质量数据把它适配到具体复杂任务？**
 
 机器人学习长期面临三个问题：
 
@@ -296,9 +298,8 @@ u(A_t^\tau|A_t)=A_t-\epsilon
 \right]
 \]
 
-简单理解：
-
-> 给模型一个“被噪声污染的动作”，同时告诉它机器人当前看到什么、任务是什么，让模型学习应该朝哪个方向修正，最终把噪声移动到真实动作分布。
+!!! note "直观理解"
+    给模型一个“被噪声污染的动作”，同时告诉它机器人当前看到什么、任务是什么，让模型学习应该朝哪个方向修正，最终把噪声移动到真实动作分布。
 
 ---
 
@@ -357,7 +358,8 @@ A_t^1
 
 模型不是简单把机器人 action token 直接塞进原来的 VLM 参数中，而是设置了一套单独的机器人权重：
 
-> **Action Expert**
+!!! note "核心模块"
+    **Action Expert**
 
 可以粗略理解成一个两专家结构：
 
@@ -382,7 +384,8 @@ Action Expert
 
 这样做的意义是：
 
-> 不强迫 Internet 预训练得到的 VLM 参数直接同时承担机器人 state / action 建模，而为机器人连续控制保留一套专门参数。
+!!! note "设计动机"
+    不强迫 Internet 预训练得到的 VLM 参数直接同时承担机器人 state / action 建模，而为机器人连续控制保留一套专门参数。
 
 ---
 
@@ -442,7 +445,8 @@ Block 3：Noisy Action Chunk
 
 这样还带来一个工程优势：
 
-> 在 flow matching 的 10 次迭代中，observation 没有变化，因此前面的 attention key/value 可以 cache，只需要反复计算 Action Expert 对 action token 的部分。
+!!! tip "工程优势"
+    在 flow matching 的 10 次迭代中，observation 没有变化，因此前面的 attention key/value 可以 cache，只需要反复计算 Action Expert 对 action token 的部分。
 
 ---
 
@@ -503,7 +507,8 @@ H=50
 
 论文早期尝试过 temporal ensembling，但发现效果反而下降，因此最终采用：
 
-> **直接 open-loop 执行 action chunk，不做 temporal aggregation。**
+!!! note "执行方式"
+    **直接 open-loop 执行 action chunk，不做 temporal aggregation。**
 
 ---
 
@@ -534,7 +539,8 @@ H=50
 
 论文反复强调：
 
-> 一个好架构还不够，robot foundation model 同样需要正确的 training recipe。
+!!! note "关键观点"
+    一个好架构还不够，robot foundation model 同样需要正确的 training recipe。
 
 π₀ 直接借鉴了 LLM 的思路：
 
@@ -554,7 +560,8 @@ H=50
 
 Pre-training 的目的不是让某一个任务做到极致，而是：
 
-> 建立广泛的机器人操作能力和泛化基础。
+!!! tip "Pre-training 目标"
+    建立广泛的机器人操作能力和泛化基础。
 
 因此预训练数据强调：
 
@@ -633,13 +640,15 @@ timesteps，其中：
 
 对于动作维度更小的机器人：
 
-> 使用 zero padding。
+!!! note "维度对齐"
+    使用 zero padding。
 
 摄像头数量也不同。
 
 不足 3 个 camera 的机器人：
 
-> 对缺失 image slot 做 mask。
+!!! note "多相机对齐"
+    对缺失 image slot 做 mask。
 
 因此一个 π₀ 模型可以联合训练：
 
@@ -709,11 +718,13 @@ place plate in the bin
 
 预训练解决：
 
-> **会不会做。**
+!!! tip "Pre-training 解决"
+    **会不会做。**
 
 Post-training 解决：
 
-> **能不能稳定、流畅、高质量地做。**
+!!! tip "Post-training 解决"
+    **能不能稳定、流畅、高质量地做。**
 
 后训练数据不再追求最大 diversity，而强调：
 
@@ -735,7 +746,8 @@ Post-training 解决：
 
 如果只使用高质量 post-training data：
 
-> 模型看不到错误和恢复过程。
+!!! warning "只用高质量数据的问题"
+    模型看不到错误和恢复过程。
 
 因为高质量 demonstration 通常全是很顺畅的成功轨迹。
 
@@ -835,7 +847,8 @@ place the plate in bin
 
 论文结果显示：
 
-> 完整 π₀ 在所有 out-of-box task 上整体最好；即使只训练到 compute-parity 的 π₀，也优于这些 baseline。
+!!! success "实验结论"
+    完整 π₀ 在所有 out-of-box task 上整体最好；即使只训练到 compute-parity 的 π₀，也优于这些 baseline。
 
 作者认为这同时说明了：
 
@@ -914,7 +927,8 @@ pick spaghetti
 
 结果表明：
 
-> π₀ 能明显利用这些 intermediate language commands，而 π₀-small 的 language following 能力弱得多。
+!!! success "实验结论"
+    π₀ 能明显利用这些 intermediate language commands，而 π₀-small 的 language following 能力弱得多。
 
 尤其 π₀-small 即使加入 high-level expert，整体收益也有限。
 
@@ -930,7 +944,8 @@ pick spaghetti
 
 作者进一步测试：
 
-> 一个预训练 π₀ 到了一个新任务，能不能比从头训练更快学会？
+!!! question "实验问题"
+    一个预训练 π₀ 到了一个新任务，能不能比从头训练更快学会？
 
 选了五个不同难度的新任务。
 
@@ -991,7 +1006,8 @@ Franka 上没有类似预训练任务。
 
 整体上：
 
-> π₀ fine-tuning 后通常优于其他方法。
+!!! success "实验结论"
+    π₀ fine-tuning 后通常优于其他方法。
 
 一个比较重要的现象是：
 
@@ -1031,11 +1047,13 @@ fine-tuning data 时，预训练模型就明显优于其他方法。
 
 在一些新任务上， prior methods 中最强的反而常常是：
 
-> **直接在目标任务上从 scratch 训练的 ACT / Diffusion Policy。**
+!!! warning "反直觉现象"
+    **直接在目标任务上从 scratch 训练的 ACT / Diffusion Policy。**
 
 也就是说：
 
-> “有预训练模型”并不自动意味着可以有效 transfer。
+!!! warning "关键提醒"
+    “有预训练模型”并不自动意味着可以有效 transfer。
 
 真正困难的是：
 
@@ -1131,7 +1149,8 @@ vs
 
 结果是：
 
-> 完整的 pre-training + post-training recipe 在这些复杂任务上整体最好。
+!!! success "实验结论"
+    完整的 pre-training + post-training recipe 在这些复杂任务上整体最好。
 
 论文 Figure 13 中，完整 π₀ 在所有这些复杂任务上的平均得分都超过各任务最高分的 50%。
 
@@ -1139,11 +1158,13 @@ vs
 
 这说明 π₀ 想强调的并不是：
 
-> “预训练模型 zero-shot 什么都会。”
+!!! warning "不是这个意思"
+    “预训练模型 zero-shot 什么都会。”
 
 而是：
 
-> **先建立广泛能力，再用高质量数据把这些能力组织成稳定的复杂任务策略。**
+!!! tip "真正观点"
+    **先建立广泛能力，再用高质量数据把这些能力组织成稳定的复杂任务策略。**
 
 ---
 
@@ -1294,7 +1315,8 @@ Post-training
 
 目前基本是：
 
-> 把能得到的数据尽量组合起来。
+!!! warning "局限"
+    把能得到的数据尽量组合起来。
 
 但仍不清楚：
 
@@ -1336,11 +1358,13 @@ Post-training
 
 所以论文证明的是：
 
-> manipulation 范围内的通用 robot foundation model 很有潜力。
+!!! success "论文证明了什么"
+    manipulation 范围内的通用 robot foundation model 很有潜力。
 
 还不是：
 
-> 一个模型已经能统一所有 embodied intelligence。
+!!! warning "论文没有证明什么"
+    一个模型已经能统一所有 embodied intelligence。
 
 ---
 
@@ -1430,7 +1454,8 @@ Robot State ─────────────┤
 
 而是：
 
-> **让 VLM 提供语义条件，再让专门的 Action Expert 通过 Flow Matching 生成连续的动作分布。**
+!!! note "核心区别"
+    **让 VLM 提供语义条件，再让专门的 Action Expert 通过 Flow Matching 生成连续的动作分布。**
 
 ---
 
@@ -1481,7 +1506,8 @@ Complex downstream robot task
 
 以后再看到 π₀，只要记住：
 
-> **π₀ 是一个以 PaliGemma 为 VLM backbone、增加机器人 Action Expert，并通过 Flow Matching 一次生成连续 action chunk 的通用 VLA；它利用大规模 cross-embodiment 数据做 pre-training，再用高质量任务数据做 post-training，从而兼顾语义泛化、灵巧控制和复杂任务适配。**
+!!! abstract "一句话记忆"
+    **π₀ 是一个以 PaliGemma 为 VLM backbone、增加机器人 Action Expert，并通过 Flow Matching 一次生成连续 action chunk 的通用 VLA；它利用大规模 cross-embodiment 数据做 pre-training，再用高质量任务数据做 post-training，从而兼顾语义泛化、灵巧控制和复杂任务适配。**
 
 更短一点：
 
@@ -1525,10 +1551,12 @@ Complex downstream robot task
 
 如果这条路线继续成立，那么以后真正重要的问题可能不再只是：
 
-> “这个任务应该设计什么网络？”
+!!! question "过去的问题"
+    “这个任务应该设计什么网络？”
 
 而会越来越变成：
 
-> “基础模型应该如何预训练、使用什么数据、怎样表示动作，以及怎样进行高效后训练？”
+!!! question "未来的问题"
+    “基础模型应该如何预训练、使用什么数据、怎样表示动作，以及怎样进行高效后训练？”
 
 这也是 π₀ 最核心的研究意义。

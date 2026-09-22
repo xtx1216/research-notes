@@ -126,6 +126,7 @@ nav:
           - π0.5: Paper-Notes/vla_base/pi05.md
       - RL 后训练:
           - iRe-VLA: Paper-Notes/RL_posttraining/iRe-VLA.md
+          - SimpleVLA-RL: Paper-Notes/RL_posttraining/SimpleVLA-RL.md
 
   - Engineering:
       - Engineering/index.md

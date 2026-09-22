@@ -14,3 +14,4 @@
 | 模型 | 标题 | 作者 | 机构 | 期刊或会议 | 年份 |
 |---|---|---|---|---|---:|
 | [iRe-VLA](RL_posttraining/iRe-VLA.md) | Improving Vision-Language-Action Model with Online Reinforcement Learning | Yanjiang Guo et al. | Tsinghua University / UC Berkeley / Shanghai Qi Zhi Institute | ICRA | 2025 |
+| [SimpleVLA-RL](RL_posttraining/SimpleVLA-RL.md) | Scaling VLA Training via Reinforcement Learning | Haozhan Li et al. | Tsinghua University / Shanghai AI Lab / Shanghai Jiao Tong University / Peking University / The University of Hong Kong / Frontis.AI | ICLR | 2026 |
