@@ -125,6 +125,8 @@ nav:
       - VLA 基础模型:
           - π0: Paper-Notes/vla_base/pi0.md
           - π0.5: Paper-Notes/vla_base/pi05.md
+      - RL 后训练:
+          - iRe-VLA: Paper-Notes/RL_posttraining/iRe-VLA.md
 
   - Engineering:
       - Engineering/index.md
