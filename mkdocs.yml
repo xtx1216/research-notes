@@ -7,6 +7,9 @@ site_url: https://xtx1216.github.io/research-notes/
 site_description: VLA / Reinforcement Learning / Robotics / Research Notes
 site_author: xtx
 
+repo_url: https://github.com/xtx1216/research-notes
+repo_name: + 新建笔记
+
 copyright: Copyright &copy; 2026 xtx
 
 
@@ -16,6 +19,7 @@ copyright: Copyright &copy; 2026 xtx
 
 theme:
   name: material
+  custom_dir: overrides
   language: zh
 
   # 左上角图标
@@ -92,55 +96,6 @@ extra_css:
 
 
 # ============================================================
-# 网站导航
-# ============================================================
-
-nav:
-  - 首页: index.md
-
-  - VLA:
-      - VLA/index.md
-      - 模型:
-          - OpenVLA: VLA/openvla.md
-      - 强化学习后训练:
-          - RL Post-Training: VLA/rl-post-training.md
-
-  - 强化学习:
-      - RL/index.md
-      - TRPO: RL/trpo.md  
-      - PPO: RL/ppo.md
-
-  - 仿真平台:
-      - Benchmarks/index.md
-      - LIBERO: Benchmarks/libero.md
-      - CALVIN: Benchmarks/calvin.md
-      - ManiSkill: Benchmarks/maniskill.md
-      - SimplerEnv: Benchmarks/simplerenv.md
-      - RoboCasa: Benchmarks/robocasa.md
-      - Meta-World: Benchmarks/metaworld.md
-
-  - 论文阅读:
-      - Paper-Notes/index.md
-      - VLA 基础模型:
-          - π0: Paper-Notes/vla_base/pi0.md
-          - π0.5: Paper-Notes/vla_base/pi05.md
-      - RL 后训练:
-          - iRe-VLA: Paper-Notes/RL_posttraining/iRe-VLA.md
-          - SimpleVLA-RL: Paper-Notes/RL_posttraining/SimpleVLA-RL.md
-
-  - Engineering:
-      - Engineering/index.md
-      - Git:
-          - Git 常用操作: Engineering/git.md
-      - Linux:
-          - Linux 常用操作: Engineering/linux.md
-      - GPU 与 CUDA:
-          - CUDA / NCCL: Engineering/cuda-nccl.md
-      - 分布式训练:
-          - FSDP: Engineering/fsdp.md
-
-
-# ============================================================
 # 插件
 # ============================================================
 
@@ -151,6 +106,9 @@ plugins:
       lang:
         - zh
         - en
+
+  # 从 docs/**/.nav.yml 生成导航，新页面会自动加入对应章节
+  - awesome-nav
 
 
 # ============================================================
@@ -257,5 +215,6 @@ extra_javascript:
 # ============================================================
 
 extra:
+  pages_cms_url: https://app.pagescms.org/
 
   generator: false

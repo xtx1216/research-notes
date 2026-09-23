@@ -1,0 +1,7 @@
+nav:
+  - 首页: index.md
+  - VLA: VLA
+  - 强化学习: RL
+  - 仿真平台: Benchmarks
+  - 论文阅读: Paper-Notes
+  - Engineering: Engineering

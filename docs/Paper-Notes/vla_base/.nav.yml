@@ -1,0 +1,4 @@
+append_unmatched: true
+nav:
+  - π0: pi0.md
+  - π0.5: pi05.md

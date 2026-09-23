@@ -1,0 +1,76 @@
+media:
+  input: docs/assets/images
+  output: /research-notes/assets/images
+  categories: [image]
+  rename: safe
+
+content:
+  - name: vla
+    label: VLA
+    type: collection
+    path: docs/VLA
+    format: raw
+    subfolders: true
+    exclude: [".nav.yml", "**/.nav.yml"]
+    operations:
+      create: true
+      rename: true
+      delete: true
+    view:
+      layout: tree
+
+  - name: reinforcement-learning
+    label: 强化学习
+    type: collection
+    path: docs/RL
+    format: raw
+    subfolders: true
+    exclude: [".nav.yml", "**/.nav.yml"]
+    operations:
+      create: true
+      rename: true
+      delete: true
+    view:
+      layout: tree
+
+  - name: benchmarks
+    label: Benchmarks
+    type: collection
+    path: docs/Benchmarks
+    format: raw
+    subfolders: true
+    exclude: [".nav.yml", "**/.nav.yml"]
+    operations:
+      create: true
+      rename: true
+      delete: true
+    view:
+      layout: tree
+
+  - name: paper-notes
+    label: 论文阅读
+    type: collection
+    path: docs/Paper-Notes
+    format: raw
+    subfolders: true
+    exclude: [".nav.yml", "**/.nav.yml"]
+    operations:
+      create: true
+      rename: true
+      delete: true
+    view:
+      layout: tree
+
+  - name: engineering
+    label: Engineering
+    type: collection
+    path: docs/Engineering
+    format: raw
+    subfolders: true
+    exclude: [".nav.yml", "**/.nav.yml"]
+    operations:
+      create: true
+      rename: true
+      delete: true
+    view:
+      layout: tree

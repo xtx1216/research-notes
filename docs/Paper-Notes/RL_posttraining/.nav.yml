@@ -1,0 +1,4 @@
+append_unmatched: true
+nav:
+  - iRe-VLA: iRe-VLA.md
+  - SimpleVLA-RL: SimpleVLA-RL.md
